@@ -1,6 +1,6 @@
-package com.example.tuxBack.repository;
+package com.example.tuxBack.domain.repository;
 
-import com.example.tuxBack.entity.UserEntity;
+import com.example.tuxBack.domain.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

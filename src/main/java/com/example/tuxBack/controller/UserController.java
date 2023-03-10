@@ -1,36 +1,35 @@
 package com.example.tuxBack.controller;
 
+import com.example.tuxBack.domain.entity.Message;
 import com.example.tuxBack.dto.UserDto;
 import com.example.tuxBack.service.UserService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
 
 @Controller
 @AllArgsConstructor
+@RequestMapping("/user")
 public class UserController {
 
     private UserService userService;
 
-    // 메인 페이지
-    @GetMapping("/")
-    public String index(){
-        return "/index";
-    }
-
-    // 회원가입 페이지
-    @GetMapping("/user/signup")
-    public String dispSignup() {
-        return "/signup";
-    }
-
     // 회원가입 처리
-    @PostMapping("/user/signup")
-    public String execSignup(UserDto userDto) {
-        userService.joinUser(userDto);
+    @PostMapping("/signup")
+    public ResponseEntity<Message> execSignup(@RequestBody UserDto userDto) {
+        if(!userDto.getPassword1().equals(userDto.getPassword2())){
+            Message message = new Message("Fail", "비밀번호가 일치하지 않습니다.");
 
-        return "redirect:/user/login";
+            return new ResponseEntity<Message>(message, HttpStatus.BAD_REQUEST);
+        }
+        else{
+            Long uid = userService.joinUser(userDto);
+            Message message = new Message("Success", "회원가입에 성공하였습니다.", uid);
+
+            return new ResponseEntity<Message>(message, HttpStatus.OK);
+        }
     }
 
     // 로그인 페이지

@@ -1,33 +1,60 @@
 package com.example.tuxBack.dto;
 
-import com.example.tuxBack.entity.UserEntity;
+import com.example.tuxBack.domain.entity.UserEntity;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.*;
-
-import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 public class UserDto {
-    private Long id;
+    @Size(min=2, max=20)
+    @NotEmpty(message = "사용자 ID는 필수항목입니다.")
+    private String id;
+
+    @Size(min=1, max=20)
+    @NotEmpty(message = "사용자 이름은 필수항목입니다.")
+    private String name;
+
+    @Size(min=1, max=20)
+    @NotEmpty(message = "학번은 필수항목입니다.")
+    private String studentNum;
+
+    @NotEmpty(message = "비밀번호는 필수항목입니다.")
+    private String password1;
+
+    @NotEmpty(message = "비밀번호 확인은 필수항목입니다.")
+    private String password2;
+
+    @Email
+    @NotEmpty(message = "이메일은 필수항목입니다.")
     private String email;
-    private String password;
-    private LocalDateTime createdDate;
-    private LocalDateTime modifiedDate;
+
+    @NotEmpty(message = "핸드폰 번호는 필수항목입니다.")
+    private String phoneNum;
 
     public UserEntity toEntity(){
         return UserEntity.builder()
                 .id(id)
+                .name(name)
+                .studentNum(studentNum)
+                .password(password1)
                 .email(email)
-                .password(password)
+                .phoneNum(phoneNum)
                 .build();
     }
 
     @Builder
-    public UserDto(Long id, String email, String password) {
+    public UserDto(String id, String name, String studentNum,
+                   String password1, String password2, String email, String phoneNum) {
         this.id = id;
+        this.name = name;
+        this.studentNum = studentNum;
+        this.password1 = password1;
+        this.password2 = password2;
         this.email = email;
-        this.password = password;
+        this.phoneNum = phoneNum;
     }
 }
