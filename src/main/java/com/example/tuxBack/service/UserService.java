@@ -34,6 +34,21 @@ public class UserService implements UserDetailsService {
         return userRepository.save(userDto.toEntity()).getUid();
     }
 
+    @Transactional
+    public boolean checkEmailDuplicate(String email){
+        return userRepository.existsByEmail(email);
+    }
+
+    @Transactional
+    public boolean checkIdDuplicate(String id){
+        return userRepository.existsById(id);
+    }
+
+    @Transactional
+    public boolean checkStudentNumDuplicate(String studentNum){
+        return userRepository.existsByStudentNum(studentNum);
+    }
+
     @Override
     public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
         Optional<UserEntity> userEntityWrapper = userRepository.findByEmail(userEmail);
