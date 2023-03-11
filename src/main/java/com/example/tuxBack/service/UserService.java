@@ -28,9 +28,7 @@ public class UserService implements UserDetailsService {
     @Transactional
     public Long joinUser(UserDto userDto) {
         // 비밀번호 암호화
-
         userDto.setPassword1(passwordEncoder.encode(userDto.getPassword1()));
-
         return userRepository.save(userDto.toEntity()).getUid();
     }
 
@@ -47,6 +45,17 @@ public class UserService implements UserDetailsService {
     @Transactional
     public boolean checkStudentNumDuplicate(String studentNum){
         return userRepository.existsByStudentNum(studentNum);
+    }
+
+    @Transactional
+    public UserEntity findByUser(String id){
+        Optional<UserEntity> entity = userRepository.findById(id);
+        UserEntity userEntity = entity.get();
+
+        if(userEntity == null){
+            return null;
+        }
+        return userEntity;
     }
 
     @Override
