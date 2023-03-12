@@ -13,20 +13,27 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    // 일단은 로그인하지 않더라도 모든 페이지에 접근할 수 있게 설정.
-   @Bean
-   SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
-       http.csrf().disable();
-       http.authorizeHttpRequests().requestMatchers(
-               new AntPathRequestMatcher("/**")
-       ).permitAll();
+    @Bean
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
+        http.csrf().disable();
+        // 일단은 로그인하지 않더라도 모든 페이지에 접근할 수 있게 설정.
+//        http.authorizeHttpRequests().requestMatchers(
+//                new AntPathRequestMatcher("/**")
+//        ).permitAll();
 
-       return http.build();
-   }
+        //우선적으로, 족보 페이지만 접근 통제 설정.
+       http
+               .authorizeHttpRequests((authz) -> authz
+                       .requestMatchers("/exam").hasRole("USER")
+                       .anyRequest().permitAll()
+               );
 
-   @Bean
+        return http.build();
+    }
+
+    @Bean
     PasswordEncoder passwordEncoder(){
-       return new BCryptPasswordEncoder();
-   }
+        return new BCryptPasswordEncoder();
+    }
 
 }
