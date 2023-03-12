@@ -37,8 +37,6 @@ public class UserDto {
     @NotEmpty(message = "핸드폰 번호는 필수항목입니다.")
     private String phoneNum;
 
-    private Boolean state;
-
     public UserEntity toEntity(){
         return UserEntity.builder()
                 .id(id)
@@ -52,7 +50,7 @@ public class UserDto {
 
     @Builder
     public UserDto(String id, String name, String studentNum,
-                   String password1, String password2, String email, String phoneNum, Boolean state) {
+                   String password1, String password2, String email, String phoneNum) {
         this.id = id;
         this.name = name;
         this.studentNum = studentNum;
@@ -60,6 +58,5 @@ public class UserDto {
         this.password2 = password2;
         this.email = email;
         this.phoneNum = phoneNum;
-        this.state = state;
     }
 }

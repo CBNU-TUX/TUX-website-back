@@ -29,11 +29,6 @@ public class UserController {
     // 회원가입 처리
     @PostMapping("/signup")
     public ResponseEntity<Message> signup(@RequestBody UserDto userDto) {
-        System.out.println(userDto.getState());
-        if(!userDto.getState()){
-            Message message = new Message("Fail", "아이디 중복검사를 수행해주세요.");
-            return new ResponseEntity<Message>(message, HttpStatus.UNAUTHORIZED);
-        }
         if(userService.checkEmailDuplicate(userDto.getEmail())){
             Message message = new Message("Fail", "이미 가입되어있는 이메일입니다.");
             return new ResponseEntity<Message>(message, HttpStatus.UNAUTHORIZED);
@@ -62,7 +57,6 @@ public class UserController {
             return new ResponseEntity<Message>(message, HttpStatus.UNAUTHORIZED);
         }
         if(!passwordEncoder.matches(loginDto.getPassword(), entity.getPassword())){
-            System.out.println(passwordEncoder.matches(loginDto.getPassword(), entity.getPassword()));
             Message message = new Message("Fail", "비밀번호가 일치하지 않습니다.");
             return new ResponseEntity<Message>(message, HttpStatus.UNAUTHORIZED);
         }
