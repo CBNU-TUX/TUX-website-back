@@ -50,7 +50,7 @@ public class UserService implements UserDetailsService {
     @Transactional
     public UserEntity findByUser(String id){
         Optional<UserEntity> entity = userRepository.findById(id);
-        UserEntity userEntity = entity.get();
+        UserEntity userEntity = entity.orElse(null);
 
         if(userEntity == null){
             return null;
